@@ -1,0 +1,30 @@
+name: Deploy PR
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    #needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - name: Build & Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        env:
+            PR_NUMBER: pr-${{ github.event.number }}
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          environment: pr-${{ github.event.number }}
+          preCommands: |
+            PR_NUMBER="$PR_NUMBER" sh .github/workflows/deploy-pr-script.sh
+          postCommands: |
+            PR_NUMBER="$PR_NUMBER" sh .github/workflows/deploy-pr-script-migrate-db.sh
+  #test:
+    # test job
+

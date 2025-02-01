@@ -1,0 +1,17 @@
+{
+  "name": "accustra",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify"
+  },
+  "dependencies": {
+    "@prisma/adapter-d1": "^6.3.0",
+    "@prisma/client": "^6.3.0",
+    "hono": "^4.6.18"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "prisma": "^6.3.0",
+    "wrangler": "^3.101.0"
+  }
+}
